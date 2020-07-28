@@ -24,13 +24,25 @@ function filterByQuery(query, animalsArray) {
     }
     return filteredResults;
   }
+  function findById(id,animalsArray) {
+    for (animal of animalsArray) {
+      if (animal.id === id) {
+        return animal
+      }
+    }
+    return null
+  }
 app.get('/api/animals', (req,res) => {
     let results = animals
     if (req.query) {
-        results = filterByQuery(req.query,results)
+      results = filterByQuery(req.query,results)
     }
-    res.json(results)
-})
+    res.json(results);
+});
+app.get('/api/animals/:id', (req,res) => {
+  const result = findById(req.params.id,animals);
+  (result) ? res.json(result) : res.sendStatus(404);
+});
 app.listen(PORT,function(){
     console.log('API server now on port 3001!')
 })
